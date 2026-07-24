@@ -1,0 +1,33 @@
+PASS  happy_path                   disposition=COMPLETED, transfers=1
+PASS  certificate_replay           rejected: certificate_already_consumed
+PASS  replay_no_effect             
+PASS  intent_substitution          rejected: intent_digest_mismatch
+PASS  quorum_forgery               rejected: quorum_not_met
+PASS  context_splice               rejected: acd_mismatch
+PASS  epoch_number_collision       rejected: predecessor_mismatch; distinct ACDs=True
+PASS  concurrent_replay            reservations=1, rejections=15
+PASS  toctou_drift                 disposition=ABORTED, no funds moved
+PASS  crash_after_effect           recovered disposition=COMPLETED, duplicates=0
+PASS  crash_before_invoke          disposition=ABORTED
+PASS  unknown_outcome              UNKNOWN durable; no silent re-issue; certificate stays consumed
+PASS  conflicting_retry            REJECTED_DIGEST_CONFLICT
+PASS  bypass_attempt               DENIED
+PASS  emergency_transition         orderly blocked; orphan send blocked; orphan closed ABORTED
+PASS  snapshot_rollback            rejected: rollback_detected; safe_mode=True
+PASS  active_manifest_expiry       rejected: manifest_expired; rejected: manifest_expired; rejected: manifest_expired; phase=PREPARED
+PASS  staged_manifest_expiry       rejected: manifest_expired; previous epoch remains active
+PASS  activation_revalidates_staged_data rejected: acd_recompute_mismatch; initial floor: rejected: state_floor_unsatisfied; attached target: rejected: target_identity_mismatch
+PASS  restart_restores_active_state restored_receipts=1, durable_receipts=2, caught_up_anchor=7
+PASS  sent_but_not_received        disposition=ABORTED, safe_mode=False
+PASS  sent_transition_rollback     rejected: rollback_detected; anchor=3
+PASS  invalid_amounts              certifier_rejections=4/4; target_status=ABORTED
+PASS  executor_proof_of_possession forged=DENIED; rejected: target_identity_mismatch; cross_target=DENIED
+PASS  forged_target_response       rejected: forged_target_response; restart_safe_mode=True; anchor=4
+PASS  persistent_target_idempotency recovered=COMPLETED, durable_transfers=1
+PASS  idempotent_concurrent_close  returns=12, stored_receipts=1, errors=0
+PASS  nonce_unique_across_certificates rejected: nonce_already_consumed
+PASS  effect_accounting            transfers=3, receipts=7
+
+==========================================================================
+RESULT: 29/29 tests passed · unauthorized external effects: 0 required
+realized transfers in adversarial world: 3 (all 3 authorized) · unauthorized: 0
